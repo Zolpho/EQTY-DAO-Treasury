@@ -4,8 +4,6 @@
 // - Ethereum: RPC for balances + Etherscan tokentx for USDT transfers
 // - Base: RPC for balances + Alchemy alchemy_getAssetTransfers for EQTY transfers
 
-import "dotenv/config";
-
 import { ethers } from "ethers";
 import fs from "fs/promises";
 import path from "path";
