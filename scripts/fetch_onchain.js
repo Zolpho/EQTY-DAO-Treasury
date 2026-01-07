@@ -1,6 +1,7 @@
 // scripts/fetch_onchain.js
 // Node >= 18 (fetch available). Tested pattern: ethers v6 JsonRpcProvider.
 
+import "dotenv/config";
 import { ethers } from "ethers";
 import fs from "fs/promises";
 import path from "path";
