@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-01-08T11:07:45.320Z",
+  "administrationId": "474057273126159366",
+  "year": "2026",
+  "financialAccount": {
+    "id": "474166156384536060",
+    "type": "PspAccount",
+    "name": "Online Betaalmethoden rekening",
+    "currency": "EUR",
+    "provider": "moneybird",
+    "active": true,
+    "updated_at": "2025-12-22T16:15:06.773Z"
+  },
+  "current": {
+    "month": "2026-01",
+    "openingBalance": "0",
+    "closingBalance": "0"
+  },
+  "totalsYtd": {
+    "mutationCount": 0,
+    "cashReceivedTotal": "0",
+    "cashPaidTotal": "0",
+    "netCashFlow": "0"
+  }
+}

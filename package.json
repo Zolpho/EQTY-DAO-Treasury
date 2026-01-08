@@ -3,9 +3,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "fetch:onchain": "node scripts/fetch_onchain.js"
+    "fetch:onchain": "node scripts/fetch_onchain.js",
+    "fetch:moneybird": "node scripts/fetch_moneybird.js",
+    "fetch:moneybird:local": "node --env-file=.env scripts/fetch_moneybird.js"
   },
   "dependencies": {
+    "dotenv": "^17.2.3",
     "ethers": "^6.0.0"
   }
 }

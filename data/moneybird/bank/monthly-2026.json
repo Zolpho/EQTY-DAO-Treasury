@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-01-08T11:07:45.257Z",
+  "year": "2026",
+  "financialAccountId": "474235471574075175",
+  "months": [
+    {
+      "month": "2026-01",
+      "period": "20260101..20260131",
+      "mutationCount": 7,
+      "openingBalance": "24.94",
+      "closingBalance": "863.54",
+      "cashReceivedTotal": "928.78",
+      "cashPaidTotal": "-90.18",
+      "netCashFlow": "838.5999999999999",
+      "cashReceivedByLedgerAccount": {
+        "474057273373623398": "928.78"
+      },
+      "cashPaidByLedgerAccount": {
+        "474057273345311827": "-82.25",
+        "474057273373623398": "-7.93"
+      }
+    }
+  ]
+}

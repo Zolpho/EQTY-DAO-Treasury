@@ -1,4 +1,4 @@
-name: Refresh on-chain snapshots
+name: Refresh snapshots
 
 on:
   workflow_dispatch:
@@ -28,12 +28,19 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Generate JSON snapshots
+      - name: Generate JSON snapshots (on-chain + Moneybird)
         env:
           ETH_RPC_URL: ${{ secrets.ETH_RPC_URL }}
           BASE_RPC_URL: ${{ secrets.BASE_RPC_URL }}
           ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
-        run: npm run fetch:onchain
+
+          MONEYBIRD_API_TOKEN: ${{ secrets.MONEYBIRD_API_TOKEN }}
+          MONEYBIRD_ADMINISTRATION_ID: ${{ secrets.MONEYBIRD_ADMINISTRATION_ID }}
+          MONEYBIRD_FINANCIAL_ACCOUNT_ID: ${{ secrets.MONEYBIRD_FINANCIAL_ACCOUNT_ID }}
+          MONEYBIRD_FINANCIAL_ACCOUNT_ID_PSP: ${{ secrets.MONEYBIRD_FINANCIAL_ACCOUNT_ID_PSP }}
+        run: |
+          npm run fetch:onchain
+          npm run fetch:moneybird
 
       - name: Commit & push if changed
         run: |
@@ -47,5 +54,6 @@ jobs:
             exit 0
           fi
 
-          git commit -m "chore(data): refresh on-chain snapshots"
+          git commit -m "chore(data): refresh snapshots"
           git push
+
