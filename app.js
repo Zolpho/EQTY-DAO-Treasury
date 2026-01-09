@@ -172,8 +172,9 @@ function renderMoneybirdAccountCard({ account, monthly }) {
   wrap.appendChild(el("div", {}, [currentLine]));
 
   const months = monthly?.months || [];
+  const monthlyTable = renderMoneybirdMonthlyTable(months);
   monthlyTable.style.marginTop = "14px";
-  wrap.appendChild(renderMoneybirdMonthlyTable(months));
+  wrap.appendChild(monthlyTable);
 
   return wrap;
 }
