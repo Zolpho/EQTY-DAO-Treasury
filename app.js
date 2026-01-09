@@ -94,20 +94,23 @@ function renderTransfers(transfers, emptyLabel) {
   const ul = el("ul", { class: "tx-list" });
 
   for (const t of transfers.slice(0, 15)) {
-    const dir = t.direction === "in" ? "IN" : t.direction === "out" ? "OUT" : String(t.direction || "").toUpperCase();
-    const amount = fmtNumberString(t.amountFormatted);
-    const ts = new Date(t.timestamp).toLocaleString();
+    const dir =
+      t.direction === "in" ? "IN" :
+      t.direction === "out" ? "OUT" :
+      String(t.direction || "").toUpperCase();
 
     const li = el("li", { class: "tx-item" });
 
-    const row = el("div", { class: "tx-row" }, [
-      link(t.explorerTxUrl, t.hash.slice(0, 10) + "…" + t.hash.slice(-8)),
-      el("span", { class: "tx-dir" }, [dir + " |"]),
-      el("span", { class: "tx-amt" }, [amount]),
-      el("span", { class: "tx-time" }, [ts]),
-    ]);
+    li.appendChild(
+      el("div", { class: "tx-row" }, [
+        link(t.explorerTxUrl, t.hash.slice(0, 10) + "…" + t.hash.slice(-8)),
+        el("span", { class: "tx-dir" }, [dir]),
+        el("span", { class: "tx-sep" }, ["|"]),
+        el("span", { class: "tx-amt" }, [fmtNumberString(t.amountFormatted)]),
+        el("span", { class: "tx-time" }, [new Date(t.timestamp).toLocaleString()]),
+      ])
+    );
 
-    li.appendChild(row);
     ul.appendChild(li);
   }
 
