@@ -77,100 +77,73 @@ Outputs:
 └── .github/workflows/refresh.yml
 
 ```
-The on-chain JSON formats are described by JSON Schema:
+The on-chain JSON formats are described by JSON Schema in `treasury-eth.schema.json` (Ethereum snapshot) and `treasury-base.schema.json` (Base snapshot).
 
-treasury-eth.schema.json (Ethereum snapshot)
+### Requirements
+Node.js 18+ is recommended.
 
-treasury-base.schema.json (Base snapshot)
+The runtime dependencies are `ethers` and `dotenv`.
 
-Requirements
-Node.js 18+ (recommended).
+### Configuration (local + CI)
+An example env file is provided as `.env.example`.
 
-Dependencies: ethers and dotenv. 
-
-Configuration (local + CI)
-An example env file is provided as .env.example
-
-Local setup
-Copy .env.example to .env and fill in values. 
+#### Local setup
+Copy `.env.example` to `.env` and fill in values.
 
 Install dependencies:
 
+```
 npm install
-
+```
 Run snapshots:
-
+```
 npm run fetch:onchain
 npm run fetch:moneybird:local
-The Moneybird local command uses node --env-file=.env .... 
+```
+The Moneybird local command uses `node --env-file=.env ...`.
 
-GitHub Actions secrets setup
-The workflow reads credentials from GitHub repository secrets (not from a committed .env). 
+### GitHub Actions secrets setup
+The workflow reads credentials from GitHub repository secrets (not from a committed `.env`).
 
-Take the keys from .env.example and create one secret per line via:
-Settings > Secrets and variables > Actions > New repository secret. 
+Take the keys from `.env.example` and create one secret per line via:
 
-Required for on-chain:
+Settings → Secrets and variables → Actions → New repository secret
 
-ETH_RPC_URL 
+#### Required for on-chain
+The on-chain snapshot requires the following secrets: `ETH_RPC_URL`, `BASE_RPC_URL`, and `ETHERSCAN_API_KEY`.
 
-BASE_RPC_URL 
+#### Optional for Moneybird (CI only)
+Moneybird secrets are required only if running Moneybird snapshots in CI. These are: `MONEYBIRD_API_TOKEN`, `MONEYBIRD_ADMINISTRATION_ID`, `MONEYBIRD_FINANCIAL_ACCOUNT_ID`, and `MONEYBIRD_FINANCIAL_ACCOUNT_ID_PSP`.
 
-ETHERSCAN_API_KEY 
+#### Hourly refresh (GitHub Actions)
+This repo includes `.github/workflows/refresh.yml` which refreshes snapshots automatically and commits updated JSON back into the repository.
 
-Optional for Moneybird (required only if running Moneybird snapshots in CI):
+It can be triggered manually via workflow_dispatch, and it also runs on a schedule every hour at minute 17 UTC (`17 * * * *`) to avoid top-of-hour congestion.
 
-MONEYBIRD_API_TOKEN 
+The workflow uses Node.js 20 and npm ci, then runs the snapshot generators:
 
-MONEYBIRD_ADMINISTRATION_ID
+```
+npm run fetch:onchain
+npm run fetch:moneybird
+```
+It commits and pushes data/ only if files changed, and it requests `contents: write` permission so it can push updates.
 
-MONEYBIRD_FINANCIAL_ACCOUNT_ID 
+#### Publishing (GitHub Pages)
+Because the dashboard is just static files plus a generated `data/` folder, GitHub Pages can serve it directly from the repository branch you configure in Settings → Pages.
 
-MONEYBIRD_FINANCIAL_ACCOUNT_ID_PSP
+As long as `data/**` is present in the published source, the site will render the latest committed snapshots.
 
-Hourly refresh (GitHub Actions)
-This repo includes .github/workflows/refresh.yml which refreshes snapshots automatically and commits updated JSON back into the repository. 
+#### Security notes
+Never commit `.env` or any API keys.
 
-Key behavior:
+The Moneybird exporter is designed to publish aggregated data (monthly totals) rather than detailed per-transaction or contact data.
 
-Triggers:
+#### Troubleshooting
+“Fetch failed … ./data/…”
+Confirm `data/meta.json`, `data/eth/treasury.json`, and `data/base/treasury.json` exist in the published site source.
 
-Manual run via workflow_dispatch. 
+#### Base transfers missing
+`BASE_RPC_URL` must be an Alchemy endpoint that supports `alchemy_getAssetTransfers`.
 
-Scheduled run every hour at minute 17 UTC (17 * * * *) to avoid top-of-hour congestion. 
-
-Uses Node.js 20 and npm ci. 
-
-Runs both snapshot generators:
-
-npm run fetch:onchain 
-
-npm run fetch:moneybird 
-
-Commits and pushes data/ only if files changed.
-
-Requests contents: write permission so it can push updates.
-
-Publishing (GitHub Pages)
-Because the dashboard is just static files plus a generated data/ folder, GitHub Pages can serve it directly from the repository branch you configure in:
-Settings → Pages.
-
-As long as data/** is present in the published source, the site will render the latest committed snapshots.
-
-Security notes
-Never commit .env or any API keys. 
-
-The Moneybird exporter is designed to publish aggregated data (monthly totals) rather than detailed per-transaction or contact data. 
-
-Troubleshooting
-“Fetch failed … ./data/…”:
-
-Confirm data/meta.json, data/eth/treasury.json, and data/base/treasury.json exist in the published site source. 
-
-Base transfers missing:
-
-BASE_RPC_URL must be an Alchemy endpoint that supports alchemy_getAssetTransfers. 
-
-Moneybird shows “not available yet”:
-
-Confirm the workflow has Moneybird secrets set, and that data/moneybird/meta.json and related files exist.
+#### Moneybird shows “not available yet”
+Confirm the workflow has Moneybird secrets set, and that `data/moneybird/meta.json` and related files exist.
