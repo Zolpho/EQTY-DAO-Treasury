@@ -103,7 +103,7 @@ function renderTransfers(transfers, emptyLabel) {
 
     li.appendChild(
       el("div", { class: "tx-row" }, [
-        link(t.explorerTxUrl, t.hash.slice(0, 10) + "…" + t.hash.slice(-8)),
+        link(t.explorerTxUrl, t.hash.slice(0, 6) + "…" + t.hash.slice(-4)),
         el("span", { class: "tx-dir" }, [dir]),
         el("span", { class: "tx-sep" }, ["|"]),
         el("span", { class: "tx-amt" }, [fmtNumberString(t.amountFormatted)]),
