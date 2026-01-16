@@ -213,10 +213,8 @@ async function main() {
     // Moneybird (optional)
     const mbMetaTarget = document.getElementById("moneybirdMeta");
     const mbBankTarget = document.getElementById("mbBank");
-    const mbPspTarget = document.getElementById("mbPsp");
 
     mbBankTarget.innerHTML = "";
-    mbPspTarget.innerHTML = "";
 
     try {
       const mbMeta = await getJson("./data/moneybird/meta.json");
@@ -226,20 +224,16 @@ async function main() {
         ? `Moneybird updated: ${new Date(mbMeta.generatedAt).toLocaleString()} (year ${year})`
         : `Moneybird year ${year}`;
 
-      const [bankAccount, bankMonthly, pspAccount, pspMonthly] = await Promise.all([
+      const [bankAccount, bankMonthly] = await Promise.all([
         getJson("./data/moneybird/bank/account.json"),
         getJson(`./data/moneybird/bank/monthly-${year}.json`),
-        getJson("./data/moneybird/psp/account.json"),
-        getJson(`./data/moneybird/psp/monthly-${year}.json`),
       ]);
 
       mbBankTarget.appendChild(renderMoneybirdAccountCard({ account: bankAccount, monthly: bankMonthly }));
-      mbPspTarget.appendChild(renderMoneybirdAccountCard({ account: pspAccount, monthly: pspMonthly }));
     } catch (e) {
       mbMetaTarget.textContent = "Moneybird data not available yet.";
       mbMetaTarget.className = "muted";
       mbBankTarget.appendChild(el("div", { class: "muted" }, [`Moneybird load error: ${e.message}`]));
-      mbPspTarget.appendChild(el("div", { class: "muted" }, ["—"]));
     }
 
     status.textContent = "";
