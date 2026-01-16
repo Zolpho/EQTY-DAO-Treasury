@@ -267,9 +267,29 @@ function renderSpendByCategory({ bankMonthly, ledgerAccounts, currency }) {
 
   const byId = buildLedgerMap(ledgerAccounts || []);
 
-  const latest = months[months.length - 1];
-  const latestTotals = aggregateSpentByGroup(latest?.cashPaidByLedgerAccount || {}, byId);
+  // Wrapper (optional, keeps alignment similar to Bank card)
+  const wrap = el("div");
+  wrap.appendChild(el("div", { class: "muted" }, [`Categories (${currency || ""})`]));
+  wrap.appendChild(el("div", {}, [`Months: ${months[0].month} → ${months[months.length - 1].month}`]));
 
+  const container = el("div", { class: "monthly-container" });
+  container.style.marginTop = "14px";
+
+  // Growing list: one card per month (same order as export: Jan, Feb, ...)
+  for (const m of months) {
+    const monthTotals = aggregateSpentByGroup(m?.cashPaidByLedgerAccount || {}, byId);
+
+    container.appendChild(
+      renderSpendCard({
+        title: m.month, // e.g. "2026-01", "2026-02"
+        totals: monthTotals,
+        byId,
+        currency,
+      })
+    );
+  }
+
+  // Final YTD totals card (optional, but you asked for a final total earlier)
   const ytdTotals = new Map();
   for (const m of months) {
     const t = aggregateSpentByGroup(m?.cashPaidByLedgerAccount || {}, byId);
@@ -277,24 +297,6 @@ function renderSpendByCategory({ bankMonthly, ledgerAccounts, currency }) {
       ytdTotals.set(groupId, (ytdTotals.get(groupId) || 0) + val);
     }
   }
-
-  // Header lines (like renderMoneybirdAccountCard)
-  const wrap = el("div");
-  wrap.appendChild(el("div", { class: "muted" }, [`Categories (${currency || ""})`]));
-  wrap.appendChild(el("div", {}, [`Latest month: ${latest.month}`]));
-
-  // Cards (like monthly table/cards layout)
-  const container = el("div", { class: "monthly-container" });
-  container.style.marginTop = "14px"; // match bank card spacing
-
-  container.appendChild(
-    renderSpendCard({
-      title: `Latest month (${latest.month})`,
-      totals: latestTotals,
-      byId,
-      currency,
-    })
-  );
 
   container.appendChild(
     renderSpendCard({
