@@ -298,14 +298,14 @@ function renderSpendByCategory({ bankMonthly, ledgerAccounts, currency }) {
     }
   }
 
-  container.appendChild(
-    renderSpendCard({
-      title: "Year-to-date",
-      totals: ytdTotals,
-      byId,
-      currency,
-    })
-  );
+  const ytdCard = renderSpendCard({
+    title: "Year-to-date",
+    totals: ytdTotals,
+    byId,
+    currency,
+  });
+  ytdCard.style.marginTop = "8px";
+  container.appendChild(ytdCard);
 
   wrap.appendChild(container);
   return wrap;
