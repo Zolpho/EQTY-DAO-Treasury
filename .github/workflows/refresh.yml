@@ -37,7 +37,6 @@ jobs:
           MONEYBIRD_API_TOKEN: ${{ secrets.MONEYBIRD_API_TOKEN }}
           MONEYBIRD_ADMINISTRATION_ID: ${{ secrets.MONEYBIRD_ADMINISTRATION_ID }}
           MONEYBIRD_FINANCIAL_ACCOUNT_ID: ${{ secrets.MONEYBIRD_FINANCIAL_ACCOUNT_ID }}
-          MONEYBIRD_FINANCIAL_ACCOUNT_ID_PSP: ${{ secrets.MONEYBIRD_FINANCIAL_ACCOUNT_ID_PSP }}
         run: |
           npm run fetch:onchain
           npm run fetch:moneybird

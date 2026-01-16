@@ -187,13 +187,11 @@ async function main() {
     MONEYBIRD_API_TOKEN,
     MONEYBIRD_ADMINISTRATION_ID,
     MONEYBIRD_FINANCIAL_ACCOUNT_ID,
-    MONEYBIRD_FINANCIAL_ACCOUNT_ID_PSP,
   } = process.env;
 
   if (!MONEYBIRD_API_TOKEN) throw new Error("Missing MONEYBIRD_API_TOKEN");
   if (!MONEYBIRD_ADMINISTRATION_ID) throw new Error("Missing MONEYBIRD_ADMINISTRATION_ID");
   if (!MONEYBIRD_FINANCIAL_ACCOUNT_ID) throw new Error("Missing MONEYBIRD_FINANCIAL_ACCOUNT_ID");
-  if (!MONEYBIRD_FINANCIAL_ACCOUNT_ID_PSP) throw new Error("Missing MONEYBIRD_FINANCIAL_ACCOUNT_ID_PSP");
 
   const year = new Date().getFullYear();
 
@@ -211,22 +209,12 @@ async function main() {
     year,
   });
 
-  await exportAccountMonthly({
-    token: MONEYBIRD_API_TOKEN,
-    administrationId: MONEYBIRD_ADMINISTRATION_ID,
-    accounts,
-    accountId: MONEYBIRD_FINANCIAL_ACCOUNT_ID_PSP,
-    outDir: "data/moneybird/psp",
-    year,
-  });
-
   await writeJson("data/moneybird/meta.json", {
     generatedAt: new Date().toISOString(),
     administrationId: String(MONEYBIRD_ADMINISTRATION_ID),
     year: String(year),
     accounts: {
       bank: String(MONEYBIRD_FINANCIAL_ACCOUNT_ID),
-      psp: String(MONEYBIRD_FINANCIAL_ACCOUNT_ID_PSP),
     },
   });
 }
