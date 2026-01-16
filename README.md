@@ -48,7 +48,6 @@ Outputs:
 
 Outputs:
 - `data/moneybird/bank/account.json` and `data/moneybird/bank/monthly-YYYY.json` 
-- `data/moneybird/psp/account.json` and `data/moneybird/psp/monthly-YYYY.json`
 - `data/moneybird/meta.json` 
 
 ### Rendering (static frontend)
@@ -113,7 +112,7 @@ Settings → Secrets and variables → Actions → New repository secret
 The on-chain snapshot requires the following secrets: `ETH_RPC_URL`, `BASE_RPC_URL`, and `ETHERSCAN_API_KEY`.
 
 #### Optional for Moneybird (CI only)
-Moneybird secrets are required only if running Moneybird snapshots in CI. These are: `MONEYBIRD_API_TOKEN`, `MONEYBIRD_ADMINISTRATION_ID`, `MONEYBIRD_FINANCIAL_ACCOUNT_ID`, and `MONEYBIRD_FINANCIAL_ACCOUNT_ID_PSP`.
+Moneybird secrets are required only if running Moneybird snapshots in CI. These are: `MONEYBIRD_API_TOKEN`, `MONEYBIRD_ADMINISTRATION_ID` and `MONEYBIRD_FINANCIAL_ACCOUNT_ID`.
 
 #### Hourly refresh (GitHub Actions)
 This repo includes `.github/workflows/refresh.yml` which refreshes snapshots automatically and commits updated JSON back into the repository.
