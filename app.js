@@ -278,7 +278,14 @@ function renderSpendByCategory({ bankMonthly, ledgerAccounts, currency }) {
     }
   }
 
+  // Header lines (like renderMoneybirdAccountCard)
+  const wrap = el("div");
+  wrap.appendChild(el("div", { class: "muted" }, [`Categories (${currency || ""})`]));
+  wrap.appendChild(el("div", {}, [`Latest month: ${latest.month}`]));
+
+  // Cards (like monthly table/cards layout)
   const container = el("div", { class: "monthly-container" });
+  container.style.marginTop = "14px"; // match bank card spacing
 
   container.appendChild(
     renderSpendCard({
@@ -298,7 +305,8 @@ function renderSpendByCategory({ bankMonthly, ledgerAccounts, currency }) {
     })
   );
 
-  return container;
+  wrap.appendChild(container);
+  return wrap;
 }
 
 /* ---------- main ---------- */
